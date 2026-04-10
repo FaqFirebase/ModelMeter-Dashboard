@@ -3,6 +3,8 @@ This project is a work in progress. Please report bugs.
 
 Multi-provider AI model usage and cost tracking. Tracks token usage across Anthropic, OpenAI, Google, Codex, Kilo, and more.
 
+![ModelMeter Dashboard](docs/modelmeter.png)
+
 ## Quick Start
 
 ```bash
