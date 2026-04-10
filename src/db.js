@@ -3,7 +3,7 @@ import { homedir } from 'os';
 import { join } from 'path';
 import { mkdirSync } from 'fs';
 
-const DATA_DIR = join(homedir(), '.llm-usage');
+const DATA_DIR = join(homedir(), '.modelmeter');
 const DB_PATH = join(DATA_DIR, 'usage.db');
 
 export function getDbPath() {
