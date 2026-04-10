@@ -7,9 +7,23 @@ const PORT = parseInt(process.env.PORT || '3456', 10);
 const HOST = process.env.HOST || 'localhost';
 const SCAN_INTERVAL_MS = parseInt(process.env.SCAN_INTERVAL || '300000', 10);
 
+const LOCALHOST_ORIGINS = [
+  `http://localhost:${PORT}`,
+  `http://127.0.0.1:${PORT}`,
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+];
+
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no Origin header (curl, Postman, same-origin)
+    if (!origin) return callback(null, true);
+    if (LOCALHOST_ORIGINS.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin not allowed: ${origin}`));
+  },
+}));
 app.use(express.json());
 
 const { router, db } = createRouter();

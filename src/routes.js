@@ -1,9 +1,35 @@
 import { Router } from 'express';
+import { resolve } from 'path';
+import { homedir } from 'os';
 import { getDb, initDb, registerProvider } from './db.js';
 import { scanProvider, scanAll, getRegisteredProviders } from './providers/index.js';
 import { importFile } from './providers/generic.js';
 import { importXlsx } from './providers/xlsx.js';
 import { getAllPricing, getResolvedCost } from './pricing.js';
+
+const HOME_DIR = homedir();
+const ALLOWED_EXTENSIONS = new Set(['.jsonl', '.json', '.xlsx', '.xls']);
+
+/**
+ * Resolves and validates a user-supplied import path.
+ * - Must resolve to within the user's home directory.
+ * - Must have an allowed file extension.
+ * Throws if either constraint is violated.
+ */
+function resolveImportPath(filepath) {
+  if (!filepath || typeof filepath !== 'string') {
+    throw new Error('filepath must be a non-empty string');
+  }
+  const abs = resolve(filepath);
+  if (!abs.startsWith(HOME_DIR + '/') && abs !== HOME_DIR) {
+    throw new Error('filepath must be within your home directory');
+  }
+  const ext = abs.slice(abs.lastIndexOf('.')).toLowerCase();
+  if (!ALLOWED_EXTENSIONS.has(ext)) {
+    throw new Error(`Unsupported file type. Allowed: ${[...ALLOWED_EXTENSIONS].join(', ')}`);
+  }
+  return abs;
+}
 
 export function createRouter() {
   const router = Router();
@@ -21,7 +47,8 @@ export function createRouter() {
       const data = getDashboardData(db);
       res.json(data);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.error(`[data] ${err.message}`);
+      res.status(500).json({ error: 'Failed to retrieve dashboard data' });
     }
   });
 
@@ -38,7 +65,8 @@ export function createRouter() {
       const result = await scanAll(db, { verbose: false });
       res.json(result);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.error(`[scan] ${err.message}`);
+      res.status(500).json({ error: 'Scan failed' });
     }
   });
 
@@ -54,23 +82,23 @@ export function createRouter() {
 
   // POST /api/import - Import a file
   router.post('/import', async (req, res) => {
+    let safePath;
     try {
       const { filepath, providerId } = req.body;
-      if (!filepath) {
-        return res.status(400).json({ error: 'filepath is required' });
-      }
+      safePath = resolveImportPath(filepath);
 
-      const isXlsx = filepath.endsWith('.xlsx') || filepath.endsWith('.xls');
+      const isXlsx = safePath.endsWith('.xlsx') || safePath.endsWith('.xls');
       let result;
 
       if (isXlsx) {
-        result = await importXlsx(db, filepath, providerId || 'xiaomi', { verbose: false });
+        result = await importXlsx(db, safePath, providerId || 'xiaomi', { verbose: false });
       } else {
-        result = await importFile(db, filepath, providerId || 'import', { verbose: false });
+        result = await importFile(db, safePath, providerId || 'import', { verbose: false });
       }
 
       res.json(result);
     } catch (err) {
+      console.error(`[import] Error for path ${safePath ?? req.body?.filepath}: ${err.message}`);
       res.status(400).json({ error: err.message });
     }
   });
@@ -95,7 +123,8 @@ export function createRouter() {
       res.setHeader('Content-Disposition', `attachment; filename="${type}_${csvTimestamp()}.csv"`);
       res.send(csv);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.error(`[export] ${err.message}`);
+      res.status(500).json({ error: 'Export failed' });
     }
   });
 
@@ -353,6 +382,11 @@ function csvTimestamp() {
     String(d.getMinutes()).padStart(2, '0');
 }
 
+const KNOWN_QUERY_TABLES = new Set(['turns', 'sessions', 'providers', 'processed_files']);
+
 function tableHasColumn(db, tableName, columnName) {
+  if (!KNOWN_QUERY_TABLES.has(tableName)) {
+    throw new Error(`Unknown table: ${tableName}`);
+  }
   return db.prepare(`PRAGMA table_info(${tableName})`).all().some(column => column.name === columnName);
 }

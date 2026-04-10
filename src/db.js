@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 import { homedir } from 'os';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import { mkdirSync } from 'fs';
 
 const DATA_DIR = join(homedir(), '.modelmeter');
@@ -15,7 +15,7 @@ export function getDataDir() {
 }
 
 export function getDb(dbPath = DB_PATH) {
-  const dir = dbPath.substring(0, dbPath.lastIndexOf('/'));
+  const dir = dirname(dbPath);
   mkdirSync(dir, { recursive: true });
 
   const db = new Database(dbPath);
@@ -112,7 +112,23 @@ export function closeDb(db) {
   if (db) db.close();
 }
 
+const KNOWN_TABLES = new Set(['providers', 'sessions', 'turns', 'processed_files']);
+const KNOWN_COLUMNS = new Set([
+  'total_reported_cost_usd', 'total_reported_total_tokens',
+  'reported_cost_usd', 'reported_total_tokens',
+]);
+const KNOWN_DEFINITIONS = new Set(['REAL', 'INTEGER', 'TEXT']);
+
 function ensureColumn(db, tableName, columnName, definition) {
+  if (!KNOWN_TABLES.has(tableName)) {
+    throw new Error(`Unknown table: ${tableName}`);
+  }
+  if (!KNOWN_COLUMNS.has(columnName)) {
+    throw new Error(`Unknown column: ${columnName}`);
+  }
+  if (!KNOWN_DEFINITIONS.has(definition)) {
+    throw new Error(`Unknown column definition: ${definition}`);
+  }
   const columns = db.prepare(`PRAGMA table_info(${tableName})`).all();
   if (!columns.some(column => column.name === columnName)) {
     try {

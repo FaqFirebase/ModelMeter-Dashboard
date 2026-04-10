@@ -12,6 +12,17 @@ npm start          # Run in foreground (Ctrl+C to stop)
 
 Open http://localhost:5173
 
+## Windows
+
+The app runs natively on Windows via `npm start`. The `./modelmeter` bash script requires [Git Bash](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+
+```bash
+npm install
+npm start          # Works on any platform
+```
+
+All `npm run` commands (`npm run start:bg`, `npm run stop`, `npm run status`, etc.) work on Windows natively.
+
 ## Start / Stop
 
 **Foreground (simple):**
