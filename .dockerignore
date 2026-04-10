@@ -1,0 +1,45 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+.vite
+.cache
+coverage
+.nyc_output
+
+# Database files
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# Process manager
+.modelmeter.pid
+.modelmeter.log
+
+# Data exports
+*.xlsx
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Editor/tool files
+.codex
+.vscode
+.idea
+
+# Tests
+tests
