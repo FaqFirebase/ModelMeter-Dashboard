@@ -114,7 +114,7 @@ export const PROVIDER_PATTERNS = {
   deepseek:      { keywords: ['deepseek'],                      provider: 'deepseek' },
   grok:          { keywords: ['grok'],                          provider: 'xai' },
   minimax:       { keywords: ['minimax'],                       provider: 'minimax' },
-  groq:          { keywords: ['groq', 'llama'],                 provider: 'groq' },
+  groq:          { keywords: ['groq'],                          provider: 'groq' },
   together:      { keywords: ['together'],                      provider: 'together' },
   fireworks:     { keywords: ['fireworks'],                     provider: 'fireworks' },
   sonar:         { keywords: ['sonar'],                         provider: 'perplexity' },

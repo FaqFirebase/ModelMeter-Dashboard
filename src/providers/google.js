@@ -3,7 +3,7 @@ import { join } from 'path';
 import { homedir } from 'os';
 import { createInterface } from 'readline';
 import { createReadStream } from 'fs';
-import { aggregateSessions, upsertSessions, insertTurns } from './db-helpers.js';
+import { aggregateSessions, upsertSessions, insertTurns, recomputeSessionTotals } from './db-helpers.js';
 
 const PROVIDER_ID = 'google';
 const PROVIDER_NAME = 'Google Gemini';
@@ -161,6 +161,10 @@ export async function scan(db, options = {}) {
         'INSERT OR REPLACE INTO processed_files (path, mtime, lines) VALUES (?, ?, ?)'
       ).run(file.path, file.mtime, lineCount);
     }
+  }
+
+  if (newFiles > 0) {
+    recomputeSessionTotals(db, PROVIDER_ID);
   }
 
   const result = { new: newFiles, updated: 0, skipped: skippedFiles, turns: totalTurns, sessions: totalSessions.size };
