@@ -1,47 +1,65 @@
 // Pricing per million tokens (USD).
-// OpenAI/Codex entries verified against official OpenAI model docs on 2026-04-10.
+// Sources verified 2026-04-10:
+//   Anthropic: https://platform.claude.com/docs/en/docs/about-claude/pricing
+//   OpenAI:    https://developers.openai.com/api/docs/pricing
+//   Google:    https://ai.google.dev/gemini-api/docs/pricing
 
 export const PRICING = {
-  // Anthropic
+  // Anthropic — current generation
   'claude-opus-4-6':      { input: 5.00,  output: 25.00, cacheWrite: 6.25,  cacheRead: 0.50  },
   'claude-opus-4-5':      { input: 5.00,  output: 25.00, cacheWrite: 6.25,  cacheRead: 0.50  },
+  'claude-opus-4-1':      { input: 15.00, output: 75.00, cacheWrite: 18.75, cacheRead: 1.50  },
+  'claude-opus-4-0':      { input: 15.00, output: 75.00, cacheWrite: 18.75, cacheRead: 1.50  },
   'claude-sonnet-4-6':    { input: 3.00,  output: 15.00, cacheWrite: 3.75,  cacheRead: 0.30  },
   'claude-sonnet-4-5':    { input: 3.00,  output: 15.00, cacheWrite: 3.75,  cacheRead: 0.30  },
+  'claude-sonnet-4-0':    { input: 3.00,  output: 15.00, cacheWrite: 3.75,  cacheRead: 0.30  },
   'claude-haiku-4-5':     { input: 1.00,  output: 5.00,  cacheWrite: 1.25,  cacheRead: 0.10  },
-  'claude-haiku-4-6':     { input: 1.00,  output: 5.00,  cacheWrite: 1.25,  cacheRead: 0.10  },
 
-  // OpenAI
+  // Anthropic — legacy
+  'claude-haiku-3-5':     { input: 0.80,  output: 4.00,  cacheWrite: 1.00,  cacheRead: 0.08  },
+  'claude-3-opus':        { input: 15.00, output: 75.00, cacheWrite: 18.75, cacheRead: 1.50  },
+  'claude-3-haiku':       { input: 0.25,  output: 1.25,  cacheWrite: 0.30,  cacheRead: 0.03  },
+
+  // OpenAI — GPT-4 family
   'gpt-4o':               { input: 2.50,  output: 10.00, cacheWrite: 2.50,  cacheRead: 1.25  },
   'gpt-4o-mini':          { input: 0.15,  output: 0.60,  cacheWrite: 0.15,  cacheRead: 0.075 },
+  'gpt-4.1-nano':         { input: 0.10,  output: 0.40,  cacheWrite: 0.10,  cacheRead: 0.025 },
   'gpt-4-turbo':          { input: 10.00, output: 30.00, cacheWrite: 10.00, cacheRead: 5.00  },
   'gpt-4':                { input: 30.00, output: 60.00, cacheWrite: 30.00, cacheRead: 15.00 },
   'gpt-3.5-turbo':        { input: 0.50,  output: 1.50,  cacheWrite: 0.50,  cacheRead: 0.25  },
-  'o1':                   { input: 15.00, output: 60.00, cacheWrite: 15.00, cacheRead: 7.50  },
-  'o1-mini':              { input: 3.00,  output: 12.00, cacheWrite: 3.00,  cacheRead: 1.50  },
-  'o1-pro':               { input: 150.00,output: 600.00,cacheWrite: 150.00,cacheRead: 75.00 },
-  'o3':                   { input: 10.00, output: 40.00, cacheWrite: 10.00, cacheRead: 2.50  },
-  'o3-mini':              { input: 1.10,  output: 4.40,  cacheWrite: 1.10,  cacheRead: 0.55  },
-  'o4-mini':              { input: 1.10,  output: 4.40,  cacheWrite: 1.10,  cacheRead: 0.55  },
 
-  // GPT-5 / Codex
-  'gpt-5':                { input: 1.25,  output: 10.00, cacheWrite: 1.25,  cacheRead: 0.125 },
-  'gpt-5.1':              { input: 1.25,  output: 10.00, cacheWrite: 1.25,  cacheRead: 0.125 },
+  // OpenAI — o-series reasoning
+  'o1':                   { input: 15.00, output: 60.00, cacheWrite: 15.00, cacheRead: 7.50  },
+  'o1-mini':              { input: 0.55,  output: 2.20,  cacheWrite: 0.55,  cacheRead: 0.55  },
+  'o1-pro':               { input: 150.00,output: 600.00,cacheWrite: 150.00,cacheRead: 75.00 },
+  'o3':                   { input: 2.00,  output: 8.00,  cacheWrite: 2.00,  cacheRead: 0.50  },
+  'o3-mini':              { input: 0.55,  output: 2.20,  cacheWrite: 0.55,  cacheRead: 0.55  },
+  'o4-mini':              { input: 0.55,  output: 2.20,  cacheWrite: 0.55,  cacheRead: 0.55  },
+
+  // OpenAI — GPT-5 family
+  'gpt-5':                { input: 0.625, output: 5.00,  cacheWrite: 0.625, cacheRead: 0.125 },
+  'gpt-5.1':              { input: 0.625, output: 5.00,  cacheWrite: 0.625, cacheRead: 0.125 },
   'gpt-5-mini':           { input: 0.25,  output: 2.00,  cacheWrite: 0.25,  cacheRead: 0.025 },
-  'gpt-5.2':              { input: 1.75,  output: 14.00, cacheWrite: 1.75,  cacheRead: 0.175 },
+  'gpt-5.3':              { input: 1.75,  output: 14.00, cacheWrite: 1.75,  cacheRead: 0.175 },
   'gpt-5.4':              { input: 2.50,  output: 15.00, cacheWrite: 2.50,  cacheRead: 0.25  },
   'gpt-5.4-mini':         { input: 0.75,  output: 4.50,  cacheWrite: 0.75,  cacheRead: 0.075 },
   'gpt-5.4-nano':         { input: 0.20,  output: 1.25,  cacheWrite: 0.20,  cacheRead: 0.02  },
-  'gpt-5-codex':          { input: 1.25,  output: 10.00, cacheWrite: 1.25,  cacheRead: 0.125 },
-  'gpt-5.1-codex':        { input: 1.25,  output: 10.00, cacheWrite: 1.25,  cacheRead: 0.125 },
-  'gpt-5.2-codex':        { input: 1.75,  output: 14.00, cacheWrite: 1.75,  cacheRead: 0.175 },
-  'codex-mini-latest':    { input: 1.50,  output: 6.00,  cacheWrite: 1.50,  cacheRead: 0.375 },
+  'gpt-5.4-pro':          { input: 30.00, output: 180.00,cacheWrite: 30.00, cacheRead: 0.25  },
 
-  // Google
-  'gemini-1.5-pro':       { input: 1.25,  output: 5.00,  cacheWrite: 1.25,  cacheRead: 0.315 },
+  // OpenAI — Codex / Codex-mini
+  'gpt-5-codex':          { input: 0.625, output: 5.00,  cacheWrite: 0.625, cacheRead: 0.125 },
+  'gpt-5.1-codex':        { input: 0.625, output: 5.00,  cacheWrite: 0.625, cacheRead: 0.125 },
+  'gpt-5.2-codex':        { input: 1.75,  output: 14.00, cacheWrite: 1.75,  cacheRead: 0.175 },
+  'gpt-5.3-codex':        { input: 1.75,  output: 14.00, cacheWrite: 1.75,  cacheRead: 0.175 },
+  'codex-mini-latest':    { input: 0.25,  output: 2.00,  cacheWrite: 0.25,  cacheRead: 0.025 },
+
+  // Google — Gemini 2.x
+  'gemini-1.5-pro':       { input: 1.25,  output: 5.00,  cacheWrite: 1.25,  cacheRead: 0.3125 },
   'gemini-1.5-flash':     { input: 0.075, output: 0.30,  cacheWrite: 0.075, cacheRead: 0.01875 },
   'gemini-2.0-flash':     { input: 0.10,  output: 0.40,  cacheWrite: 0.10,  cacheRead: 0.025 },
-  'gemini-2.5-pro':       { input: 1.25,  output: 10.00, cacheWrite: 1.25,  cacheRead: 0.315 },
-  'gemini-2.5-flash':     { input: 0.15,  output: 0.60,  cacheWrite: 0.15,  cacheRead: 0.0375 },
+  'gemini-2.5-pro':       { input: 1.25,  output: 10.00, cacheWrite: 1.25,  cacheRead: 0.3125 },
+  'gemini-2.5-flash':     { input: 0.30,  output: 2.50,  cacheWrite: 0.30,  cacheRead: 0.075 },
+  'gemini-2.5-flash-lite': { input: 0.10, output: 0.40,  cacheWrite: 0.10,  cacheRead: 0.025 },
 
   // Mistral
   'mistral-large':        { input: 2.00,  output: 6.00,  cacheWrite: 2.00,  cacheRead: 0.50  },
