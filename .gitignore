@@ -40,3 +40,5 @@ __pycache__/
 .codex
 .vscode/
 .idea/
+MEMORY.md
+REASONING.md
