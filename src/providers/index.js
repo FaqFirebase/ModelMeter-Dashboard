@@ -8,6 +8,7 @@ import * as groq from './groq.js';
 import * as ollama from './ollama.js';
 import * as codexbar from './codexbar.js';
 import * as xiaomi from './xiaomi.js';
+import * as opencode from './opencode.js';
 
 const PROVIDERS = {
   anthropic,
@@ -20,6 +21,7 @@ const PROVIDERS = {
   ollama,
   codexbar,
   xiaomi,
+  opencode,
 };
 
 export function getRegisteredProviders() {
@@ -37,7 +39,7 @@ export async function scanProvider(db, providerId, options = {}) {
   return provider.scan(db, options);
 }
 
-export async function scanAll(db, options = {}) {
+export async function scanAllProviders(db, options = {}) {
   const results = {};
   for (const [id, provider] of Object.entries(PROVIDERS)) {
     try {

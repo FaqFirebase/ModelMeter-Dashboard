@@ -74,6 +74,7 @@ npm run logs        # Tail logs
 | OpenAI (GPT) | Local JSONL logs | Yes |
 | Google (Gemini) | Local JSONL logs | Yes |
 | Codex | `~/.codex/logs_2.sqlite` | Yes |
+| OpenCode | `~/.local/share/opencode/opencode.db` SQLite | Yes |
 | Kilo | `~/.local/share/kilo/kilo.db` SQLite | Yes |
 | CodexBar CLI | `codexbar --format json` fallback | Yes |
 | Minimax | `~/.minimax/logs/` JSONL | Yes |
@@ -171,6 +172,7 @@ src/
     openai.js         OpenAI log reader
     google.js         Gemini log reader
     codex.js          Codex SQLite reader
+    opencode.js       OpenCode SQLite reader
     kilo.js           Kilo SQLite reader (codexbar fallback)
     codexbar.js       CodexBar CLI integration
     minimax.js        Minimax provider

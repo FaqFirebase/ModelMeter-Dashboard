@@ -192,15 +192,12 @@ export async function scan(db, options = {}) {
         for (const s of aggregated) totalSessions.add(s.session_id);
         totalTurns += turns.length;
         if (!isNew) updatedFiles++;
-      } else if (isNew) {
-        newFiles++;
       }
+      if (isNew) newFiles++;
 
       db.prepare(
         'INSERT OR REPLACE INTO processed_files (path, mtime, lines) VALUES (?, ?, ?)'
       ).run(file.path, file.mtime, lineCount);
-
-      if (isNew) newFiles++;
     }
   }
 
@@ -215,5 +212,4 @@ export async function scan(db, options = {}) {
   return result;
 }
 
-export function getProviderId() { return PROVIDER_ID; }
 export function getProviderName() { return PROVIDER_NAME; }

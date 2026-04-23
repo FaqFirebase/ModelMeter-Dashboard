@@ -107,6 +107,8 @@ export const PRICING = {
   'mimo-v2-pro':          { input: 1.00,  output: 3.00,  cacheWrite: 1.00,  cacheRead: 0.25  },
   'mimo-v2-flash':        { input: 0.10,  output: 0.30,  cacheWrite: 0.10,  cacheRead: 0.025 },
   'mimo-v2-omni':         { input: 0.40,  output: 2.00,  cacheWrite: 0.40,  cacheRead: 0.10  },
+  'mimo-v2.5':            { input: 0.40,  output: 2.00,  cacheWrite: 0.40,  cacheRead: 0.10  },
+  'mimo-v2.5-pro':        { input: 1.00,  output: 3.00,  cacheWrite: 1.00,  cacheRead: 0.25  },
 
   // Ollama (local, free)
   'llama-3.1-local':      { input: 0,     output: 0,     cacheWrite: 0,     cacheRead: 0     },

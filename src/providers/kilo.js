@@ -1,50 +1,14 @@
-import { execSync } from 'child_process';
 import { basename, join } from 'path';
 import { homedir } from 'os';
 import { existsSync } from 'fs';
 import Database from 'better-sqlite3';
 import { aggregateSessions, upsertSessions, insertTurns, recomputeSessionTotals } from './db-helpers.js';
+import { findCodexbar } from './codexbar.js';
 
 const PROVIDER_ID = 'kilo';
 const PROVIDER_NAME = 'Kilo Code';
 const KILO_DB_PATH = join(homedir(), '.local', 'share', 'kilo', 'kilo.db');
 const LIVE_SESSION_ID = 'kilo-live';
-
-function findCodexbar() {
-  const isWindows = process.platform === 'win32';
-
-  // Cross-platform paths
-  const paths = [
-    // macOS Homebrew
-    '/usr/local/bin/codexbar',
-    '/opt/homebrew/bin/codexbar',
-    // Linux Homebrew
-    '/home/linuxbrew/.linuxbrew/bin/codexbar',
-    // Windows: Win-CodexBar installed locations
-    join(homedir(), 'AppData', 'Local', 'codexbar', 'codexbar.exe'),
-    join(homedir(), '.cargo', 'bin', 'codexbar.exe'),
-    'C:\\Program Files\\codexbar\\codexbar.exe',
-    // WSL: Windows codexbar.exe accessible via /mnt/c/
-    '/mnt/c/Program Files/codexbar/codexbar.exe',
-    '/mnt/c/Users/' + process.env.USER + '/AppData/Local/codexbar/codexbar.exe',
-  ];
-
-  for (const p of paths) {
-    try {
-      if (existsSync(p)) return p;
-    } catch {
-      // Skip inaccessible paths
-    }
-  }
-
-  // Try PATH lookup
-  try {
-    const cmd = isWindows ? 'where codexbar' : 'which codexbar';
-    return execSync(cmd, { encoding: 'utf-8' }).trim().split('\n')[0];
-  } catch {
-    return null;
-  }
-}
 
 function projectNameFromDirectory(directory, title) {
   if (directory && directory !== homedir()) {
@@ -288,5 +252,4 @@ export function scan(db, options = {}) {
   return liveResult;
 }
 
-export function getProviderId() { return PROVIDER_ID; }
 export function getProviderName() { return PROVIDER_NAME; }

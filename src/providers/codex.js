@@ -134,5 +134,4 @@ export function scan(db, options = {}) {
   return result;
 }
 
-export function getProviderId() { return PROVIDER_ID; }
 export function getProviderName() { return PROVIDER_NAME; }

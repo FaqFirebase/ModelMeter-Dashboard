@@ -20,7 +20,7 @@ src/
   providers/
     index.js                 Provider registry. Calls scan(db, options) on each.
     db-helpers.js             aggregateSessions(), upsertSessions(), insertTurns(), recomputeSessionTotals().
-    <provider>.js             One file per provider. Exports: scan(), getProviderId(), getProviderName().
+    <provider>.js             One file per provider. Exports: scan(), getProviderName().
   ui/
     pages/Dashboard.jsx      Main page. FilterBar + charts + tables.
     components/CollapsibleSection.jsx  Reusable accessible collapsible container.
@@ -34,7 +34,6 @@ Every provider file must export:
 
 ```js
 export function scan(db, options = {}) { /* returns { new, updated, skipped, turns, sessions } */ }
-export function getProviderId() { return 'provider-id'; }
 export function getProviderName() { return 'Human Name'; }
 ```
 

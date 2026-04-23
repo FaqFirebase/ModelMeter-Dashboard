@@ -1,6 +1,5 @@
 export {
   PRICING,
-  PROVIDER_PATTERNS,
   normalizeModelName,
   getPricing,
   getProviderFromModel,
@@ -8,10 +7,6 @@ export {
   getAllPricing,
   getResolvedCost,
 } from '../../shared/pricing.js';
-
-export function isBillable(model) {
-  return getPricing(model) !== null;
-}
 
 export function fmt(n) {
   if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';

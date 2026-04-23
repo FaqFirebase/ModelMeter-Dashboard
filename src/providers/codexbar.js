@@ -10,7 +10,7 @@ const PROVIDER_ALIAS = {
   claude: 'anthropic',
 };
 
-function findCodexbar() {
+export function findCodexbar() {
   const isWindows = process.platform === 'win32';
 
   const paths = [
@@ -25,6 +25,7 @@ function findCodexbar() {
     'C:\\Program Files\\codexbar\\codexbar.exe',
     // WSL: Windows codexbar.exe accessible via /mnt/c/
     '/mnt/c/Program Files/codexbar/codexbar.exe',
+    '/mnt/c/Users/' + process.env.USER + '/AppData/Local/codexbar/codexbar.exe',
   ];
 
   for (const p of paths) {
@@ -237,5 +238,4 @@ export function scan(db, options = {}) {
   return { new: providerMap.size, updated: 0, skipped: 0, turns: totalTurns, sessions: totalSessions };
 }
 
-export function getProviderId() { return PROVIDER_ID; }
 export function getProviderName() { return PROVIDER_NAME; }

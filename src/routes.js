@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { resolve } from 'path';
 import { homedir } from 'os';
 import { getDb, initDb, registerProvider } from './db.js';
-import { scanProvider, scanAll, getRegisteredProviders } from './providers/index.js';
+import { scanProvider, scanAllProviders, getRegisteredProviders } from './providers/index.js';
 import { importFile } from './providers/generic.js';
 import { importXlsx } from './providers/xlsx.js';
 import { getAllPricing, getResolvedCost } from './pricing.js';
@@ -31,38 +31,44 @@ function resolveImportPath(filepath) {
   return abs;
 }
 
-export function createRouter() {
+export function createRouter(db) {
   const router = Router();
-  const db = getDb();
-  initDb(db);
-
-  // Register known providers
-  for (const p of getRegisteredProviders()) {
-    registerProvider(db, p.id, p.name);
+  const isOwner = !db;
+  if (!db) {
+    db = getDb();
+    initDb(db);
+    for (const p of getRegisteredProviders()) {
+      registerProvider(db, p.id, p.name, p);
+    }
   }
 
   // GET /api/data - Dashboard data
-  router.get('/data', (req, res) => {
+  router.get('/data', async (req, res) => {
     try {
       const data = getDashboardData(db);
       res.json(data);
     } catch (err) {
-      console.error(`[data] ${err.message}`);
-      res.status(500).json({ error: 'Failed to retrieve dashboard data' });
+      console.error('[data]', err.message);
+      res.status(500).json({ error: 'Failed to fetch data' });
     }
   });
 
   // GET /api/providers - List registered providers
   router.get('/providers', (req, res) => {
-    const providers = getRegisteredProviders();
-    const dbProviders = db.prepare('SELECT * FROM providers').all();
-    res.json({ registered: providers, db: dbProviders });
+    try {
+      const providers = getRegisteredProviders(db);
+      const dbProviders = db.prepare('SELECT * FROM providers').all();
+      res.json({ registered: providers, db: dbProviders });
+    } catch (err) {
+      console.error('[providers]', err.message);
+      res.status(500).json({ error: 'Failed to fetch providers' });
+    }
   });
 
   // POST /api/scan - Scan all providers
   router.post('/scan', async (req, res) => {
     try {
-      const result = await scanAll(db, { verbose: false });
+      const result = await scanAllProviders(db, { verbose: false });
       res.json(result);
     } catch (err) {
       console.error(`[scan] ${err.message}`);

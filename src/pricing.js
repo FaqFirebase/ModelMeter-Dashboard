@@ -1,6 +1,5 @@
 export {
   PRICING,
-  PROVIDER_PATTERNS,
   normalizeModelName,
   getPricing,
   getProviderFromModel,

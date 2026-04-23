@@ -145,5 +145,4 @@ export async function importFile(db, filepath, providerId = PROVIDER_ID, options
   return result;
 }
 
-export function getProviderId() { return PROVIDER_ID; }
 export function getProviderName() { return PROVIDER_NAME; }

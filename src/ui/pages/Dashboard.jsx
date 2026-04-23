@@ -19,7 +19,7 @@ import { fmt, fmtCost, fmtCostBig, getProviderColor, getResolvedCost } from '../
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
-const RANGE_LABELS = { '7d': 'Last 7 Days', '30d': 'Last 30 Days', '90d': 'Last 90 Days', 'all': 'All Time' };
+const RANGE_LABELS = { '1d': 'Last 24 Hours', '7d': 'Last 7 Days', '30d': 'Last 30 Days', '90d': 'Last 90 Days', 'all': 'All Time' };
 const CHART_COLORS = [
   'rgba(139, 92, 246, 0.8)',
   'rgba(6, 182, 212, 0.8)',
@@ -134,7 +134,7 @@ function FilterBar({ filters, data }) {
 
       <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 shrink-0">Range</span>
       <div className="flex rounded-lg overflow-hidden border border-white/[0.08]">
-        {['7d', '30d', '90d', 'all'].map(r => (
+        {['1d', '7d', '30d', '90d', 'all'].map(r => (
           <button
             key={r}
             onClick={() => setRange(r)}

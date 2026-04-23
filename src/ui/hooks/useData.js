@@ -89,7 +89,7 @@ export function useFilters(data) {
 
   const getRangeCutoff = useCallback(() => {
     if (range === 'all') return null;
-    const days = range === '7d' ? 7 : range === '30d' ? 30 : 90;
+    const days = range === '1d' ? 1 : range === '7d' ? 7 : range === '30d' ? 30 : 90;
     const d = new Date();
     d.setDate(d.getDate() - days);
     return d.toISOString().slice(0, 10);

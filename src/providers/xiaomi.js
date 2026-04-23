@@ -21,5 +21,4 @@ export function scan(db, options = {}) {
   return { new: 0, updated: 0, skipped: 0, turns: 0, sessions: 0 };
 }
 
-export function getProviderId() { return PROVIDER_ID; }
 export function getProviderName() { return PROVIDER_NAME; }
