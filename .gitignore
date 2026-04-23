@@ -40,6 +40,7 @@ __pycache__/
 .codex
 .vscode/
 .idea/
+.playwright-mcp
 MEMORY.md
 REASONING.md
 .serena
